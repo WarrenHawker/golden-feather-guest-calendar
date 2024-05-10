@@ -23,7 +23,7 @@ const EventCard = ({ data }: Props) => {
     };
 
     // Function to update current time based on timezone
-    const updateCurrentTime = (timezone) => {
+    const updateCurrentTime = (timezone: string) => {
       const offset = new Date().getTimezoneOffset() / 60; // Get offset from UTC
       const currentTime = new Date(
         new Date().toLocaleString('en-US', { timeZone: timezone })
