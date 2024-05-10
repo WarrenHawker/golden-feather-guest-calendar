@@ -1,54 +1,31 @@
 import { useEffect, useState } from 'react';
 import { EventData } from '../../data';
 import { formatDate } from '../../functions/formatDate';
+import { convertTimezone } from '../../functions/convertTimezone';
 
 type Props = {
   data: EventData;
+  selectEvent: (id: string) => void;
+  timezone: string;
 };
 
-const EventCard = ({ data }: Props) => {
-  const [currentTime, setCurrentTime] = useState(new Date(data.dateTime));
+const EventCard = ({ data, selectEvent, timezone }: Props) => {
+  const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
-    // Function to fetch user's timezone from IP address
-    const fetchUserTimezone = async () => {
-      try {
-        const response = await fetch('https://ipinfo.io/json');
-        const data = await response.json();
-        const timezone = data.timezone;
-        updateCurrentTime(timezone);
-      } catch (error) {
-        console.error('Error fetching timezone:', error);
-      }
-    };
-
-    // Function to update current time based on timezone
-    const updateCurrentTime = (timezone: string) => {
-      const offset = new Date().getTimezoneOffset() / 60; // Get offset from UTC
-      const currentTime = new Date(
-        new Date().toLocaleString('en-US', { timeZone: timezone })
+    if (!timezone) {
+      setCurrentTime(
+        new Date(data.dateTime).toLocaleString('en-US', { timeZone: 'UTC' })
       );
-      const adjustedTime = new Date(
-        currentTime.getTime() + offset * 3600 * 1000
-      );
-      setCurrentTime(adjustedTime);
-    };
-
-    fetchUserTimezone();
-
-    // Update time every minute
-    const intervalId = setInterval(() => {
-      fetchUserTimezone();
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+    } else {
+      setCurrentTime(convertTimezone(data.dateTime, timezone));
+    }
+  }, [timezone]);
 
   return (
-    <>
-      <h2>{formatDate(data.dateTime)}</h2>
-      <p>{formatDate(currentTime)}</p>
-    </>
+    <div className="event-card" onClick={() => selectEvent(data.id)}>
+      <h2>{formatDate(currentTime)}</h2>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 export type EventData = {
-  id: string | number;
+  id: string;
   dateTime: Date | string;
   isAvailable: boolean;
 };
