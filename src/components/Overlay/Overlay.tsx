@@ -13,7 +13,10 @@ const Overlay = ({ children, isOpen, setIsOpen }: Props) => {
 
   const closeOverlay = (e: SyntheticEvent) => {
     const target = e.target as HTMLElement;
-    if (target.classList.contains('overlay')) {
+    if (
+      target.classList.contains('overlay') ||
+      target.classList.contains('overlay-content-container')
+    ) {
       setIsOpen(false);
     }
   };

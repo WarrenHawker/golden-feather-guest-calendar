@@ -54,21 +54,9 @@
   width: 100%;
   max-width: 1000px;
   margin: auto;
-  border-top: 1px solid grey;
   overflow: auto;
   height: max-content;
-}
-
-.overlay-content-header {
-  margin-right: 4em;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-
-.overlay-content-header h2 {
-  font-size: 24px;
-  margin-top: 0;
+  margin-top: 1em;
 }
 
 #overlay-close {

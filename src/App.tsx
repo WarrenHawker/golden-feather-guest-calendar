@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import EventCard from './components/EventCard/EventCard';
 import eventDates, { EventData } from './data';
 import Overlay from './components/Overlay/Overlay';
+import GuestForm from './components/GuestForm/GuestForm';
 
 const App = () => {
   const [selectedEvent, setSelectedEvent] = useState<null | EventData>(null);
@@ -51,7 +52,9 @@ const App = () => {
       </div>
 
       {selectedEvent && (
-        <Overlay isOpen={isOverlayOpen} setIsOpen={setIsOverlayOpen}></Overlay>
+        <Overlay isOpen={isOverlayOpen} setIsOpen={setIsOverlayOpen}>
+          <GuestForm event={selectedEvent} />
+        </Overlay>
       )}
     </>
   );

@@ -29,8 +29,25 @@ body {
   padding: 1em;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .event-card:hover {
   transform: scale(1.1);
+}
+
+label,
+input,
+button {
+  display: block;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.invalid {
+  border: 2px solid red;
 }
