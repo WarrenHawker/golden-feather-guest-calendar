@@ -1,5 +1,3 @@
-import { formatDate } from '../functions/formatDate';
-
 export type AdminEmailOptions = {
   name: string;
   email: string;
@@ -12,7 +10,7 @@ export type AdminEmailOptions = {
 
 export const adminNotificationText = (options: AdminEmailOptions) => {
   return `A new Golden Feather guest form has just been submitted. Here are the details:
-    event: ${formatDate(options.event)}
+    event: ${options.event}
     name: ${options.name}
     email: ${options.email}
     discord: ${options.discord}
@@ -24,7 +22,7 @@ export const adminNotificationText = (options: AdminEmailOptions) => {
 
 export const adminNotificationHtml = (options: AdminEmailOptions) => {
   return `A new Golden Feather guest form has just been submitted. Here are the details:
-  event: ${formatDate(options.event)}
+  event: ${options.event}
   name: ${options.name}
   email: ${options.email}
   discord: ${options.discord}

@@ -1,17 +1,7 @@
 import { SyntheticEvent, useState } from 'react';
 import { EventData } from '../../data';
 import { formatDate } from '../../functions/formatDate';
-import { sendEmail } from '../../functions/sendEmail';
 import validator from 'validator';
-import {
-  confirmEmailHtml,
-  confirmEmailText,
-} from '../../templates/confirmEmailTemplate';
-import {
-  AdminEmailOptions,
-  adminNotificationHtml,
-  adminNotificationText,
-} from '../../templates/adminNotificationTemplate';
 
 const { isEmail, isEmpty, isURL, escape, normalizeEmail } = validator;
 
@@ -30,7 +20,7 @@ const GuestForm = ({ event }: Props) => {
   const [error, setError] = useState('');
   const [invalidInputs, setInvalidInputs] = useState<string[]>([]);
 
-  const submitForm = (e: SyntheticEvent) => {
+  const submitForm = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     //check for missing required fields
@@ -85,46 +75,50 @@ const GuestForm = ({ event }: Props) => {
       return;
     }
 
-    //send confirmation to guest
-    sendEmail(
-      email,
-      'thank you for your message',
-      confirmEmailText(name, event.dateTime),
-      confirmEmailHtml(name, event.dateTime)
-    );
-
     let sanitisedEmail = escape(email).trim();
     sanitisedEmail = normalizeEmail(sanitisedEmail, {
       gmail_remove_dots: false,
     }) as string;
 
-    //send notification to admin
-    const adminEmailOptions: AdminEmailOptions = {
+    const emailOptions = {
       name: escape(name).trim(),
       email: sanitisedEmail,
       discord: escape(discord).trim(),
-      twitter,
-      youtube,
-      twitch,
-      event: event.dateTime,
+      twitter: twitter || '',
+      youtube: youtube || '',
+      twitch: twitch || '',
+      event: formatDate(event.dateTime),
     };
 
-    sendEmail(
-      import.meta.env.VITE_SENDGRID_ADMIN,
-      'new form submission',
-      adminNotificationText(adminEmailOptions),
-      adminNotificationHtml(adminEmailOptions)
-    );
+    const url = 'http://localhost:5000/email';
 
-    setIsFormSubmitted(true);
-    setName('');
-    setEmail('');
-    setDiscord('');
-    setTwitter('');
-    setYoutube('');
-    setTwitch('');
-    setError('');
-    setInvalidInputs([]);
+    try {
+      console.log(emailOptions);
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailOptions),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        console.log(data);
+        setError(`${data.code}: ${data.message}`);
+        return;
+      }
+
+      setIsFormSubmitted(true);
+      setName('');
+      setEmail('');
+      setDiscord('');
+      setTwitter('');
+      setYoutube('');
+      setTwitch('');
+      setError('');
+      setInvalidInputs([]);
+    } catch (error) {
+      setError((error as Error).message as string);
+    }
   };
   return (
     <>
