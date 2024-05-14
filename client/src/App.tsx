@@ -1,3 +1,11 @@
+/* 
+  App.tsx file
+
+  Displays all components and fetches user's timezone from their IP address
+  This is used to automatically update the event dates and times locally
+  for the user.
+*/
+
 import { useEffect, useState } from 'react';
 import EventCard from './components/EventCard/EventCard';
 import eventDates, { EventData } from './data';
@@ -24,6 +32,7 @@ const App = () => {
     fetchUserTimezone();
   }, []);
 
+  //activates when a user clicks on one of the event cards - opens overlay with GuestForm component in it
   const changeSelectedEvent = (id: string) => {
     const newSelectedEvent = eventDates.filter((i) => i.id == id)[0];
     setSelectedEvent(newSelectedEvent);
@@ -40,7 +49,7 @@ const App = () => {
 
       <div className="event-card-container">
         {eventDates
-          .filter((event) => event.isAvailable)
+          .filter((event) => event.isAvailable) //only shows available events to user
           .map((event) => (
             <EventCard
               key={event.id}

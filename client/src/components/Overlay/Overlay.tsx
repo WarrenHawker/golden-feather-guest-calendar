@@ -1,3 +1,11 @@
+/* 
+  Overlay component
+
+  Wraps around the GuestForm component as a pop-up overlay. 
+  It opens/closes by linking directly to the isOverlayOpen useState 
+  in the App.tsx file.
+*/
+
 import { ReactNode, SyntheticEvent, useEffect } from 'react';
 
 type Props = {
@@ -8,7 +16,7 @@ type Props = {
 
 const Overlay = ({ children, isOpen, setIsOpen }: Props) => {
   useEffect(() => {
-    import('./Overlay.css');
+    import('./Overlay.css'); //overlay.css file is only loaded on pages that uses the component
   }, []);
 
   const closeOverlay = (e: SyntheticEvent) => {
@@ -17,7 +25,7 @@ const Overlay = ({ children, isOpen, setIsOpen }: Props) => {
       target.classList.contains('overlay') ||
       target.classList.contains('overlay-content-container')
     ) {
-      setIsOpen(false);
+      setIsOpen(false); //allows the overlay to close when the user clicks outside the form
     }
   };
 

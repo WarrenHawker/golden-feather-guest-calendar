@@ -1,3 +1,9 @@
+/* 
+  Global CSS file
+
+  Contains basic CSS resets and some other bits that are used by the entire app. 
+*/
+
 *,
 *::before,
 *::after {

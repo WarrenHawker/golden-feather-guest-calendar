@@ -1,3 +1,9 @@
+/* 
+  Overlay CSS file
+
+  Contains all the CSS specific to the Overlay component
+*/
+
 .overlay:before {
   content: '';
   background: rgba(0, 0, 0, 0.6);

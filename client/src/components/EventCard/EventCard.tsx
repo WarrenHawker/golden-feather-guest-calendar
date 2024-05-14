@@ -1,3 +1,11 @@
+/* 
+  EventCard component
+
+  Displays the Date and Time of each event. When clicked on, it runs the 
+  selecEvent function that is linked to the changeSelectedEvent function in
+  App.tsx, opening the overlay with the GuestForm linked to that event. 
+*/
+
 import { useEffect, useState } from 'react';
 import { EventData } from '../../data';
 import { formatDate } from '../../functions/formatDate';

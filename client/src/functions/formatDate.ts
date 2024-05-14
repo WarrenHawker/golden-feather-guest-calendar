@@ -1,3 +1,10 @@
+/* 
+  formatDate function
+
+  Global function that changes the format of any given Date or dateTime string to make
+  it more readable. Returned date format is as follows: 12am Friday 3rd May
+*/
+
 // Function to get ordinal suffix for the day of the month (e.g., 1st, 2nd, 3rd, etc.)
 const getOrdinalSuffix = (day: number): string => {
   if (day >= 11 && day <= 13) {

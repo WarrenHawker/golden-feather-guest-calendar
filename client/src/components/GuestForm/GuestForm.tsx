@@ -1,7 +1,17 @@
-import { SyntheticEvent, useState } from 'react';
+/* 
+  GuestForm component
+
+  Runs inside the Overlay component, shown when the user clicks on 
+  one of the event cards. 
+
+  Submitting the form sends automated emails to both the user and the admins. 
+*/
+
+import { SyntheticEvent, useRef, useState } from 'react';
 import { EventData } from '../../data';
 import { formatDate } from '../../functions/formatDate';
 import validator from 'validator';
+import emailjs from '@emailjs/browser';
 
 const { isEmail, isEmpty, isURL, escape, normalizeEmail } = validator;
 
@@ -19,9 +29,24 @@ const GuestForm = ({ event }: Props) => {
   const [twitch, setTwitch] = useState('');
   const [error, setError] = useState('');
   const [invalidInputs, setInvalidInputs] = useState<string[]>([]);
+  const form = useRef<HTMLFormElement | null>(null);
 
   const submitForm = async (e: SyntheticEvent) => {
     e.preventDefault();
+
+    //testing emailJS to see if it will work with current setup
+    emailjs
+      .sendForm('service_lbeidgn', 'template_fcvertt', form.current!, {
+        publicKey: 'w5qWThVRhxrGVgDP-',
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+        }
+      );
 
     //check for missing required fields
     const missingFields = [];
@@ -140,7 +165,7 @@ const GuestForm = ({ event }: Props) => {
             Please fill in the form below to book for event on:{' '}
             {formatDate(event.dateTime)}
           </h2>
-          <form>
+          <form ref={form}>
             <label htmlFor="name">Name (required)</label>
             <input
               className={invalidInputs.includes('name') ? 'invalid' : ''}
